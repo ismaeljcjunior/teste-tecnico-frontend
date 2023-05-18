@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Card, CardContent, Container, Grid, Typography, Box } from '@mui/material'
+import { Card, CardContent, Container, Grid, Typography, Box, Button } from '@mui/material'
 import { IGetDataProps } from '../../shared/interfaces/interfces'
 
 export const Home = () => {
     const [data, setData] = useState([])
     const [isLoading, setIsloading] = useState(Boolean)
     const [error, setError] = useState(null)
+    const [selectedTeam, setSelectedTeam] = useState('')
     const options = {
         method: 'GET',
         url: 'https://api-football-v1.p.rapidapi.com/v3/countries',
@@ -16,21 +17,24 @@ export const Home = () => {
         }
     }
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.request(options)
-                console.log(response.data.response)
-                setData(response.data.response)
-                setIsloading(false)
-                console.log('------------------', data)
-            } catch (e) {
-                console.error(e)
-                setIsloading(false)
-            }
-        }
-        fetchData()
+        // const fetchData = async () => {
+        //     try {
+        //         const response = await axios.request(options)
+        //         console.log(response.data.response)
+        //         setData(response.data.response)
+        //         setIsloading(false)
+        //         console.log('------------------', data)
+        //     } catch (e) {
+        //         console.error(e)
+        //         setIsloading(false)
+        //     }
+        // }
+        // fetchData()
     }, [])
 
+    const chooseTeam = (country: string) => {
+        setSelectedTeam(country)
+    }
 
     return (
         <>
@@ -49,11 +53,15 @@ export const Home = () => {
                         data.map((country: IGetDataProps) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={country.code}>
                                 <Card style={{ width: '200px', height: '180', backgroundColor: '#696969' }}>
-                                    <CardContent>
+                                    <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+
                                         <Typography variant="h5" component="div" color='#DCDCDC'>
                                             {country.name}
                                         </Typography>
                                         <img src={country.flag} alt={country.name + ' flag'} style={{ width: '50px', height: '50px' }} />
+                                        <Button variant="contained" color="primary" onClick={() => chooseTeam(country)}>
+                                            Escolher
+                                        </Button>
                                     </CardContent>
                                 </Card>
                             </Grid>
