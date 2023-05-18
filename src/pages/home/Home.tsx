@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Container } from '@mui/material'
+import { Card, CardContent, Container, Grid, Typography, Box } from '@mui/material'
 import { IGetDataProps } from '../../shared/interfaces/interfces'
 
 export const Home = () => {
@@ -35,20 +35,31 @@ export const Home = () => {
     return (
         <>
             <Container>
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>{error}</p>
-                ) : (
-                    <ul>
-                        {data.map((country: IGetDataProps) => (
-                            <li key={country.code}>
-                                {country.name}
-                                <img src={country.flag} alt={country.name + ' flag'} />
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <Box>
+                    <Typography variant="h2" component="div" color='#DCDCDC'>
+                        Escolha seu time
+                    </Typography>
+                </Box>
+                <Grid container spacing={2}>
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>{error}</p>
+                    ) : (
+                        data.map((country: IGetDataProps) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={country.code}>
+                                <Card style={{ width: '200px', height: '180', backgroundColor: '#696969' }}>
+                                    <CardContent>
+                                        <Typography variant="h5" component="div" color='#DCDCDC'>
+                                            {country.name}
+                                        </Typography>
+                                        <img src={country.flag} alt={country.name + ' flag'} style={{ width: '50px', height: '50px' }} />
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        ))
+                    )}
+                </Grid>
             </Container>
         </>
     )
